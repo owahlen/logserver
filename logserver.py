@@ -24,13 +24,14 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length)
-        logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
-                     str(self.path), str(self.headers), post_data.decode('utf-8'))
+        post_data_string = post_data.decode('utf-8')
+        logging.info("POST request\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
+                     str(self.path), str(self.headers), post_data_string)
 
         self._set_headers()
         self.wfile.write(
             "<html><body><h1>POST request</h1><p>{}</p><p>{}</p></body></html>".format(
-                self.path, post_data).encode('utf-8')
+                self.path, post_data_string).encode('utf-8')
         )
 
 
