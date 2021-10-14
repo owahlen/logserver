@@ -2,6 +2,7 @@
 
 import argparse
 import logging
+import socket
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
 
@@ -35,9 +36,13 @@ class RequestHandler(BaseHTTPRequestHandler):
         )
 
 
+class HTTPServerV6(HTTPServer):
+    address_family = socket.AF_INET6
+
+
 def run(port=8080):
-    server_address = ('', port)
-    logserver = HTTPServer(server_address, RequestHandler)
+    server_address = ('::', port)
+    logserver = HTTPServerV6(server_address, RequestHandler)
     logging.info("Starting logserver on port {}...\n".format(port))
     try:
         logserver.serve_forever()
